@@ -1,6 +1,24 @@
 <template>
   <div class="container">
-    <h1>Hello world</h1>
+    <section class="hero is-success">
+      <div class="hero-body">
+        <p class="title">Italiano Practice</p>
+        <p class="subtitle">
+          Practice your italian with more than 1000 sentences
+        </p>
+        <div class="box">
+          <p>Word Category: È</p>
+          <p>Questo è mio!</p>
+        </div>
+        <div class="box">
+          <div class="field is-grouped">
+            <p class="control is-expanded">
+              <input class="input" type="text" />
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
