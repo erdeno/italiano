@@ -3,7 +3,9 @@
     <section class="hero" :class="isTrue ? 'is-primary' : 'is-danger'">
       <div class="hero-body">
         <p class="title">Italiano Practice</p>
-        <p class="subtitle">Practice your italian with more than 1000 sentences</p>
+        <p class="subtitle">
+          Practice your italian with more than 1000 sentences
+        </p>
         <div class="columns is-mobile">
           <div class="column is-half">
             <p class="box is-danger">Word Category: {{ categoryName }}</p>
@@ -16,10 +18,18 @@
           </div>
         </div>
         <p class="box is-danger">{{ inEnglish[sentenceIndex] }}</p>
+        <p class="box is-danger" v-if="showSentence">
+          {{ inItalian[sentenceIndex] }}
+        </p>
         <div class="box">
           <div class="field is-grouped">
             <p class="control is-expanded">
-              <input class="input" type="text" v-model="written" v-on:keyup.enter="nextSentence" />
+              <input
+                class="input"
+                type="text"
+                v-model="written"
+                v-on:keyup.enter="nextSentence"
+              />
             </p>
             <p class="control">
               <a class="button is-static">{{ timer }}sn.</a>
@@ -50,6 +60,7 @@ export default {
       inItalian: [],
       inEnglish: [],
       isTrue: true,
+      showSentence: false,
     }
   },
   watch: {
@@ -62,8 +73,8 @@ export default {
         this.inItalian[this.sentenceIndex].slice(0, val.length).toLowerCase()
       )
       const userSentence = val.toLowerCase()
-      console.log(sentence)
-      console.log(userSentence)
+      // console.log(sentence)
+      // console.log(userSentence)
       this.isTrue = sentence == userSentence
     },
   },
@@ -83,7 +94,14 @@ export default {
     },
     nextSentence() {
       if (this.written) {
-        this.isTrue ? (this.trueCount += 1) : (this.falseCount += 1)
+        if (this.isTrue) {
+          this.trueCount += 1
+          this.showSentence = false
+        } else {
+          this.falseCount += 1
+          this.showSentence = true
+          return
+        }
         if (this.sentenceIndex < this.inEnglish.length) {
           this.sentenceIndex += 1
         } else {
