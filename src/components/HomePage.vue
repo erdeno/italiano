@@ -14,8 +14,26 @@
           15%
         </progress>
         <div class="columns is-mobile">
-          <div class="column is-half">
-            <p class="box is-danger">Word Category: {{ categoryName }}</p>
+          <div class="column">
+            <div class="box is-danger">
+              <p>Word Category:</p>
+              <div class="control has-icons-left">
+                <div class="select">
+                  <select @change="selectCategory">
+                    <option
+                      v-for="(sentence, key) in sentences"
+                      :key="key"
+                      :value="key"
+                    >
+                      {{ sentence[0] }}
+                    </option>
+                  </select>
+                </div>
+                <div class="icon is-small is-left">
+                  <i class="fas fa-pizza-slice"></i>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="column">
             <p class="box is-danger">True count: {{ trueCount }}</p>
@@ -24,9 +42,7 @@
             <p class="box is-danger">False count: {{ falseCount }}</p>
           </div>
         </div>
-        <p class="box is-danger">
-          {{ inEnglish[sentenceIndex] }}
-        </p>
+        <p class="box is-danger">{{ inEnglish[sentenceIndex] }}</p>
         <p class="box is-danger" v-if="showSentence">
           {{ inItalian[sentenceIndex] }}
         </p>
@@ -132,6 +148,10 @@ export default {
       text = text.replace('à', 'a')
       text = text.replace('ò', 'o')
       return text
+    },
+    selectCategory(e) {
+      const index = e.target.value
+      this.getCategory(index)
     },
   },
 }
