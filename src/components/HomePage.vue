@@ -13,10 +13,9 @@
         >
           15%
         </progress>
-        <div class="columns is-mobile">
+        <div class="columns">
           <div class="column">
-            <div class="box is-danger">
-              <p>Word Category:</p>
+            <div class="box">
               <div class="control has-icons-left">
                 <div class="select">
                   <select @change="selectCategory">
@@ -55,9 +54,6 @@
                 v-model="written"
                 v-on:keyup.enter="nextSentence"
               />
-            </p>
-            <p class="control">
-              <a class="button is-static">{{ timer }}sn.</a>
             </p>
           </div>
         </div>
