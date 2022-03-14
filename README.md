@@ -4,7 +4,6 @@ This template should help get you started developing with Vue 3 in Vite.
 
 
 ## TODO
-- Progress bar per category
 - Choose category
 - Save where left
 - Login / Logout
