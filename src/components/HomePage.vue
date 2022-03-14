@@ -6,6 +6,13 @@
         <p class="subtitle">
           Practice your italian with more than 1000 sentences
         </p>
+        <progress
+          class="progress is-link"
+          :value="sentenceIndex"
+          :max="inItalian.length"
+        >
+          15%
+        </progress>
         <div class="columns is-mobile">
           <div class="column is-half">
             <p class="box is-danger">Word Category: {{ categoryName }}</p>
@@ -17,7 +24,9 @@
             <p class="box is-danger">False count: {{ falseCount }}</p>
           </div>
         </div>
-        <p class="box is-danger">{{ inEnglish[sentenceIndex] }}</p>
+        <p class="box is-danger">
+          {{ inEnglish[sentenceIndex] }}
+        </p>
         <p class="box is-danger" v-if="showSentence">
           {{ inItalian[sentenceIndex] }}
         </p>
@@ -91,10 +100,14 @@ export default {
       this.categoryName = category[0]
       this.inItalian = category[1]['ITA']
       this.inEnglish = category[1]['EN']
+      // console.log(this.inItalian)
     },
     nextSentence() {
       if (this.written) {
-        if (this.isTrue) {
+        if (
+          this.isTrue &&
+          this.written.length == this.inItalian[this.sentenceIndex].length
+        ) {
           this.trueCount += 1
           this.showSentence = false
         } else {
@@ -102,7 +115,7 @@ export default {
           this.showSentence = true
           return
         }
-        if (this.sentenceIndex < this.inEnglish.length) {
+        if (this.sentenceIndex + 1 < this.inEnglish.length) {
           this.sentenceIndex += 1
         } else {
           this.sentenceIndex = 0
@@ -116,6 +129,8 @@ export default {
     normalize(text) {
       text = text.replace('ì', 'i')
       text = text.replace('è', 'e')
+      text = text.replace('à', 'a')
+      text = text.replace('ò', 'o')
       return text
     },
   },
