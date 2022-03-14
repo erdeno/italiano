@@ -116,7 +116,7 @@ export default {
       this.categoryName = category[0]
       this.inItalian = category[1]['ITA']
       this.inEnglish = category[1]['EN']
-      // console.log(this.inItalian)
+      this.sentenceIndex = 0
     },
     nextSentence() {
       if (this.written) {
@@ -134,7 +134,6 @@ export default {
         if (this.sentenceIndex + 1 < this.inEnglish.length) {
           this.sentenceIndex += 1
         } else {
-          this.sentenceIndex = 0
           this.categoryIndex += 1
           this.getCategory(this.categoryIndex)
         }
@@ -152,6 +151,8 @@ export default {
     selectCategory(e) {
       const index = e.target.value
       this.getCategory(index)
+      this.trueCount = 0
+      this.falseCount = 0
     },
   },
 }
