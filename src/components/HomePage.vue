@@ -6,23 +6,17 @@
         <p class="subtitle">
           Practice your italian with more than 1000 sentences
         </p>
-        <progress
-          class="progress is-link"
-          :value="sentenceIndex"
-          :max="inItalian.length"
-        >
-          15%
-        </progress>
         <div class="columns">
           <div class="column">
             <div class="box">
               <div class="control has-icons-left">
-                <div class="select">
+                <div class="select is-rounded">
                   <select @change="selectCategory">
                     <option
                       v-for="(sentence, key) in sentences"
                       :key="key"
                       :value="key"
+                      :selected="key == categoryIndex"
                     >
                       {{ sentence[0] }}
                     </option>
@@ -34,13 +28,22 @@
               </div>
             </div>
           </div>
-          <div class="column">
-            <p class="box is-danger">True count: {{ trueCount }}</p>
-          </div>
-          <div class="column">
-            <p class="box is-danger">False count: {{ falseCount }}</p>
-          </div>
         </div>
+        <div class="buttons">
+          <button class="button is-success is-light is-static">
+            True: {{ trueCount }}
+          </button>
+          <button class="button is-danger is-light is-static">
+            False: {{ falseCount }}
+          </button>
+        </div>
+        <progress
+          class="progress is-link"
+          :value="sentenceIndex"
+          :max="inItalian.length"
+        >
+          15%
+        </progress>
         <p class="box is-danger">{{ inEnglish[sentenceIndex] }}</p>
         <p class="box is-danger" v-if="showSentence">
           {{ inItalian[sentenceIndex] }}
@@ -94,8 +97,6 @@ export default {
         this.inItalian[this.sentenceIndex].slice(0, val.length).toLowerCase()
       )
       const userSentence = val.toLowerCase()
-      // console.log(sentence)
-      // console.log(userSentence)
       this.isTrue = sentence == userSentence
     },
   },
@@ -105,10 +106,10 @@ export default {
   methods: {
     getSentences() {
       this.sentences = this.italianSentences
-      this.getCategory(this.categoryIndex)
+      this.getCategory()
     },
-    getCategory(index) {
-      const category = this.sentences[index]
+    getCategory() {
+      const category = this.sentences[this.categoryIndex]
       this.categoryName = category[0]
       this.inItalian = category[1]['ITA']
       this.inEnglish = category[1]['EN']
@@ -122,19 +123,20 @@ export default {
         ) {
           this.trueCount += 1
           this.showSentence = false
+
+          if (this.sentenceIndex + 1 < this.inEnglish.length) {
+            this.sentenceIndex += 1
+          } else {
+            this.categoryIndex += 1
+            this.getCategory()
+          }
+          this.written = ''
+          this.isTrue = true
         } else {
           this.falseCount += 1
           this.showSentence = true
           return
         }
-        if (this.sentenceIndex + 1 < this.inEnglish.length) {
-          this.sentenceIndex += 1
-        } else {
-          this.categoryIndex += 1
-          this.getCategory(this.categoryIndex)
-        }
-        this.written = ''
-        this.isTrue = true
       }
     },
     normalize(text) {
@@ -145,8 +147,9 @@ export default {
       return text
     },
     selectCategory(e) {
-      const index = e.target.value
-      this.getCategory(index)
+      const index = Math.floor(e.target.value)
+      this.categoryIndex = index
+      this.getCategory()
       this.trueCount = 0
       this.falseCount = 0
     },
