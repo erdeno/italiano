@@ -4,7 +4,6 @@ This template should help get you started developing with Vue 3 in Vite.
 
 
 ## TODO
-- kategori seçtikten sonra kategori index çok fazla çıkıyor.
 - Save where left
 - Login / Logout
 

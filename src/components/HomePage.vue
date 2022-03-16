@@ -44,15 +44,67 @@
         >
           15%
         </progress>
+
         <p class="box is-danger">{{ inEnglish[sentenceIndex] }}</p>
         <p class="box is-danger" v-if="showSentence">
           {{ inItalian[sentenceIndex] }}
         </p>
+
+        <button
+          class="button is-rounded"
+          name="a grave"
+          @click="writeSpecialChar('à')"
+        >
+          à
+        </button>
+        <button
+          class="button is-rounded"
+          name="e grave"
+          @click="writeSpecialChar('è')"
+        >
+          è
+        </button>
+        <button
+          class="button is-rounded"
+          name="e acute"
+          @click="writeSpecialChar('é')"
+        >
+          é
+        </button>
+        <button
+          class="button is-rounded"
+          name="i grave"
+          @click="writeSpecialChar('ì')"
+        >
+          ì
+        </button>
+        <button
+          class="button is-rounded"
+          name="o grave"
+          @click="writeSpecialChar('ò')"
+        >
+          ò
+        </button>
+        <button
+          class="button is-rounded"
+          name="o acute"
+          @click="writeSpecialChar('ó')"
+        >
+          ó
+        </button>
+        <button
+          class="button is-rounded"
+          name="u grave"
+          @click="writeSpecialChar('ù')"
+        >
+          ù
+        </button>
         <div class="box">
           <div class="field is-grouped">
             <p class="control is-expanded">
               <input
                 class="input"
+                ref="input"
                 type="text"
                 v-model="written"
                 v-on:keyup.enter="nextSentence"
@@ -93,9 +145,9 @@ export default {
         this.written = ''
         return
       }
-      const sentence = this.normalize(
-        this.inItalian[this.sentenceIndex].slice(0, val.length).toLowerCase()
-      )
+      const sentence = this.inItalian[this.sentenceIndex]
+        .slice(0, val.length)
+        .toLowerCase()
       const userSentence = val.toLowerCase()
       this.isTrue = sentence == userSentence
     },
@@ -139,19 +191,20 @@ export default {
         }
       }
     },
-    normalize(text) {
-      text = text.replace('ì', 'i')
-      text = text.replace('è', 'e')
-      text = text.replace('à', 'a')
-      text = text.replace('ò', 'o')
-      return text
-    },
     selectCategory(e) {
       const index = Math.floor(e.target.value)
       this.categoryIndex = index
       this.getCategory()
       this.trueCount = 0
       this.falseCount = 0
+    },
+    writeSpecialChar(char) {
+      if (this.written) {
+        this.written += char
+      } else {
+        this.written = char.toUpperCase()
+      }
+      this.$refs.input.focus()
     },
   },
 }
