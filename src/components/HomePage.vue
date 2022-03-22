@@ -137,6 +137,9 @@ export default {
       inEnglish: [],
       isTrue: true,
       showSentence: false,
+      lastPlace: localStorage.getItem('lastPlace')
+        ? JSON.parse(localStorage.getItem('lastPlace'))
+        : {},
     }
   },
   watch: {
@@ -153,6 +156,8 @@ export default {
     },
   },
   mounted() {
+    this.categoryIndex = this.lastPlace.categoryIndex
+    this.sentenceIndex = this.lastPlace.sentenceIndex
     this.getSentences()
   },
   methods: {
@@ -189,14 +194,13 @@ export default {
           this.showSentence = true
           return
         }
+        this.saveToLocal()
       }
     },
     selectCategory(e) {
       const index = Math.floor(e.target.value)
       this.categoryIndex = index
       this.getCategory()
-      this.trueCount = 0
-      this.falseCount = 0
     },
     writeSpecialChar(char) {
       if (this.written) {
@@ -205,6 +209,11 @@ export default {
         this.written = char.toUpperCase()
       }
       this.$refs.input.focus()
+    },
+    saveToLocal() {
+      this.lastPlace.categoryIndex = this.categoryIndex
+      this.lastPlace.sentenceIndex = this.sentenceIndex
+      localStorage.setItem('lastPlace', JSON.stringify(this.lastPlace))
     },
   },
 }
